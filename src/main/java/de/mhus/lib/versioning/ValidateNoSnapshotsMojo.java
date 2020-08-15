@@ -47,30 +47,34 @@ public class ValidateNoSnapshotsMojo extends AbstractMojo {
             failed = true;
         }
 
-        if (Util.isSnapshot(project.getParent().getVersion())) {
+        if (project.getParent() != null && Util.isSnapshot(project.getParent().getVersion())) {
             reason += "SNAPSHOT PARENT: " + project.getParent() + "\n";
             failed = true;
         }
 
-        for (Artifact artifact : project.getDependencyArtifacts()) {
-            if (Util.isSnapshot(artifact.getVersion())) {
-                reason += "SNAPSHOT ARTIFACT: " + artifact + "\n";
-                failed = true;
+        if (project.getDependencyArtifacts() != null)
+            for (Artifact artifact : project.getDependencyArtifacts()) {
+                if (Util.isSnapshot(artifact.getVersion())) {
+                    reason += "SNAPSHOT ARTIFACT: " + artifact + "\n";
+                    failed = true;
+                }
             }
-        }
-        for (Dependency dep : project.getDependencies()) {
-            if (Util.isSnapshot(dep.getVersion())) {
-                reason += "SNAPSHOT DEPENDENCY: " + dep + "\n";
-                failed = true;
+        
+        if (project.getDependencies() != null)
+            for (Dependency dep : project.getDependencies()) {
+                if (Util.isSnapshot(dep.getVersion())) {
+                    reason += "SNAPSHOT DEPENDENCY: " + dep + "\n";
+                    failed = true;
+                }
             }
-        }
 
-        for (Dependency dep : project.getDependencyManagement().getDependencies()) {
-            if (Util.isSnapshot(dep.getVersion())) {
-                reason += "SNAPSHOT DEPENDENCY MANAGEMENT: " + dep + "\n";
-                failed = true;
+        if (project.getDependencyManagement() != null && project.getDependencyManagement().getDependencies() != null)
+            for (Dependency dep : project.getDependencyManagement().getDependencies()) {
+                if (Util.isSnapshot(dep.getVersion())) {
+                    reason += "SNAPSHOT DEPENDENCY MANAGEMENT: " + dep + "\n";
+                    failed = true;
+                }
             }
-        }
 
         if (failed) throw new MojoFailureException(reason);
     }
