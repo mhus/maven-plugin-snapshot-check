@@ -4,3 +4,4 @@
 target/
 .externalToolBuilders/
 dependency-reduced-pom.xml
+.idea
