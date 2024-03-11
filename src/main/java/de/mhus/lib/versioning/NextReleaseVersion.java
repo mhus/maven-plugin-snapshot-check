@@ -16,6 +16,7 @@ import org.apache.maven.project.MavenProject;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Logger;
 
 @Mojo(
         name = "next-release-version",
@@ -25,10 +26,11 @@ import java.util.Date;
         threadSafe = true)
 public class NextReleaseVersion extends AbstractMojo {
 
-    @Parameter(defaultValue = "simple")
+    Logger log = Logger.getLogger(NextReleaseVersion.class.getCanonicalName());
+    @Parameter(defaultValue = "simple", property = "type")
     String type;
 
-    @Parameter(defaultValue = "target/release-version.txt")
+    @Parameter(defaultValue = "target/release-version.txt", property = "outputFile")
     String outputFile;
 
     @Parameter(defaultValue = "${project}")
@@ -61,6 +63,8 @@ public class NextReleaseVersion extends AbstractMojo {
         }
 
         File output = new File(outputFile);
+        output.getParentFile().mkdirs();
+        log.info("Release version: " + version + " -> " + output.getAbsolutePath());
         MFile.writeFile(output, version);
 
     }

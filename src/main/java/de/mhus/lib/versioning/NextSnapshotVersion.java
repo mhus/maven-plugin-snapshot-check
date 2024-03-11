@@ -12,6 +12,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 @Mojo(
         name = "next-snapshot-version",
@@ -20,10 +21,13 @@ import java.io.File;
         inheritByDefault = false,
         threadSafe = true)
 public class NextSnapshotVersion extends AbstractMojo  {
-    @Parameter(defaultValue = "major")
+
+    Logger log = Logger.getLogger(NextSnapshotVersion.class.getCanonicalName());
+
+    @Parameter(defaultValue = "minor", property = "type")
     String type;
 
-    @Parameter(defaultValue = "target/snapshot-version.txt")
+    @Parameter(defaultValue = "target/snapshot-version.txt", property = "outputFile")
     String outputFile;
 
     @Parameter(defaultValue = "${project}")
@@ -58,6 +62,8 @@ public class NextSnapshotVersion extends AbstractMojo  {
         }
 
         File output = new File(outputFile);
+        output.getParentFile().mkdirs();
+        log.info("Snapshot version: " + version + " -> " + output.getAbsolutePath());
         MFile.writeFile(output, version);
 
     }
