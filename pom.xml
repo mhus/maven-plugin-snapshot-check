@@ -22,6 +22,7 @@
         <groupId>de.mhus.lib</groupId>
         <artifactId>mhus-oss</artifactId>
         <version>7.0.0</version>
+        <relativePath></relativePath>
 	</parent>
     <groupId>de.mhus.mvn.plugin</groupId>
 	<version>1.0.4-SNAPSHOT</version>
@@ -29,7 +30,7 @@
 	<packaging>maven-plugin</packaging>
 	<url>http://www.mhus.de</url>
 
-	<name>Snapshot Check</name>
+	<name>versioning-maven-plugin</name>
 	<description>A tool to check if a project has snapshot dependencies.</description>
 
 
@@ -150,15 +151,17 @@
                     <exclude>jline:*</exclude>
 		         </excludes>
 		        </artifactSet>
-				<filter>
-				  <artifact>*:*</artifact>
-				  <excludes>
-				    <exclude>META-INF/*.SF</exclude> 
-				    <exclude>META-INF/*.DSA</exclude> 
-				    <exclude>META-INF/*.RSA</exclude> 
-				    <exclude>META-INF/ECLIPSE*</exclude> 
-				  </excludes>
-				</filter>
+                <filters>
+                    <filter>
+                      <artifact>*:*</artifact>
+                      <excludes>
+                        <exclude>META-INF/*.SF</exclude>
+                        <exclude>META-INF/*.DSA</exclude>
+                        <exclude>META-INF/*.RSA</exclude>
+                        <exclude>META-INF/ECLIPSE*</exclude>
+                      </excludes>
+                    </filter>
+                </filters>
 		        </configuration>
 		      </execution>
 		    </executions>
